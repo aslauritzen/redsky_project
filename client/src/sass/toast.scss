@@ -1,0 +1,16 @@
+
+.toast {
+    top: 12px;
+    right: 12px;
+    transition: transform .6s ease-in-out;
+    animation: toast-in-right .7s;
+    font-size: 14px;
+    box-sizing: border-box;
+    position: fixed;
+    .success {
+        background-color: #08bc0e;
+    }
+    .error {
+        background-color: #bc2308;
+    }
+}

@@ -1,28 +1,29 @@
 import React from 'react';
-import { Box, Button } from '@material-ui/core';
+import Button from '../components/Button';
 import UserModal from './UserModal';
 import Users from '../models/Users';
 import { ForceReload } from '../util/tableState';
 import { useSetRecoilState } from 'recoil';
+import '../sass/styles.scss';
 
 export default function AddUser() {
     const [open, setOpen] = React.useState(false);
-	const reload = useSetRecoilState(ForceReload);
-  
+    const reload = useSetRecoilState(ForceReload);
+
     const handleClickOpen = () => {
-      setOpen(true);
+        setOpen(true);
     };
-  
+
     const handleClose = () => {
-      setOpen(false);
+        setOpen(false);
     };
 
     return (
-        <Box m={3} className="right-align">
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+        <div className='box right-align'>
+            <Button className='main-button' onClick={handleClickOpen}>
                 Add User
             </Button>
             <UserModal user={Users.emptyUser()} open={open} handleClose={handleClose} reload={reload} newUser={true} />
-        </Box>
+        </div>
     );
 }

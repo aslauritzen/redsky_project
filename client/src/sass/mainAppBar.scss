@@ -1,0 +1,16 @@
+@import './variables';
+
+.title {
+    flex-grow: 1;
+    margin: 0;
+    color: white;
+}
+
+.main-nav {
+    padding: 30px 10px;
+    background-color: $mainAppColor;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+}

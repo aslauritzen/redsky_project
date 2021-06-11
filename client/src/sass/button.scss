@@ -1,0 +1,36 @@
+@import './variables';
+
+.button {
+    background-color: #fefefe;
+    padding: 15px 20px;
+    border-radius: 10px;
+    font-size: .9em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px #666;
+    transition: .1s;
+}
+
+.main-button {
+    color: scale-color($mainAppColor, $lightness: -20%);
+    border: 1px solid $mainAppColor;
+}
+
+.cancel-button {
+    color: $warningColor;
+    border: 1px solid $warningColor;
+}
+
+.button:not([disabled]):hover {
+    margin: 1px -1px -1px 1px;
+    background-color: #eee;
+    box-shadow: none;
+    transition: .1s;
+}
+
+.button[disabled] {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+    box-shadow: none;
+    margin: 1px -1px -1px 1px;
+}

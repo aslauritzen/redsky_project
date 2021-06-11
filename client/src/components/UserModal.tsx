@@ -1,8 +1,12 @@
-import Users from "../models/Users";
-import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, DialogActions } from '@material-ui/core';
-import React from "react";
-import { SetterOrUpdater } from "recoil";
-import { addUser, updateUser } from "../util/apiConnection";
+import Users from '../models/Users';
+import React from 'react';
+import { SetterOrUpdater } from 'recoil';
+import { addUser, updateUser } from '../util/apiConnection';
+// import Modal from '../components/Modal';
+// import ModalBody from './ModalBody';
+// import ModalFooter from './ModalFooter';
+import Button from './Button';
+import '../sass/modal.scss';
 
 interface UserProps {
     user: Users;
@@ -12,33 +16,7 @@ interface UserProps {
     newUser: boolean;
 }
 
-const UserModal: React.FC<UserProps> = ({user, open, handleClose, reload, newUser}) => {
-    const [formData, setFormData] = React.useState({id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email, avatar: user.avatar});
-    const [firstNameValid, validFirstName] = React.useState(!newUser);
-    const [lastNameValid, validLastName] = React.useState(!newUser);
-    const [emailValid, validEmail] = React.useState(!newUser);
-    const [firstNameTouched, touchFirstName] = React.useState(!newUser);
-    const [lastNameTouched, touchLastName] = React.useState(!newUser);
-    const [emailTouched, touchEmail] = React.useState(!newUser);
-
-    function firstNameChange (e: React.ChangeEvent<HTMLInputElement>) {
-        setFormData({...formData, firstName: e.target.value});
-        validFirstName(!!e.target.value);
-    }
-
-    function lastNameChange (e: React.ChangeEvent<HTMLInputElement>) {
-        setFormData({...formData, lastName: e.target.value});
-        validLastName(!!e.target.value);
-    }
-
-    function emailChange (e: React.ChangeEvent<HTMLInputElement>) {
-        setFormData({...formData, email: e.target.value});
-        validEmail(!!e.target.value && e.target.value.indexOf('@') > 0);
-    }
-
-    function avatarChange (e: React.ChangeEvent<HTMLInputElement>) {
-        setFormData({...formData, avatar: e.target.value});
-    }
+const UserModal: React.FC<UserProps> = ({ user, open, handleClose, reload, newUser }) => {
 
     function submitUser() {
         if (newUser) addUser(formData, reload);
@@ -47,10 +25,10 @@ const UserModal: React.FC<UserProps> = ({user, open, handleClose, reload, newUse
     }
 
     function updateState() {
-        setFormData({id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email, avatar: user.avatar});
+        setFormData({ id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email, avatar: user.avatar });
     }
 
-    function closeDialog () {
+    function closeDialog() {
         validFirstName(!newUser);
         validLastName(!newUser);
         validEmail(!newUser);
@@ -61,72 +39,161 @@ const UserModal: React.FC<UserProps> = ({user, open, handleClose, reload, newUse
         handleClose();
     }
 
+    function modalBackgroundClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        const target = event.target as HTMLElement;
+        if (target.classList.contains('modal-background')) {
+            closeDialog();
+        }
+    }
+
+    function firstNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+        props.setFormData({ ...props.formData, firstName: e.target.value });
+        props.validFirstName(!!e.target.value);
+    }
+
+    function lastNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+        props.setFormData({ ...props.formData, lastName: e.target.value });
+        props.validLastName(!!e.target.value);
+    }
+
+    function emailChange(e: React.ChangeEvent<HTMLInputElement>) {
+        props.setFormData({ ...props.formData, email: e.target.value });
+        props.validEmail(!!e.target.value && e.target.value.indexOf('@') > 0);
+    }
+
+    function avatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+        props.setFormData({ ...props.formData, avatar: e.target.value });
+    }
+
+    const [formData, setFormData] = React.useState({ id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email, avatar: user.avatar });
+    const [firstNameValid, validFirstName] = React.useState(!newUser);
+    const [lastNameValid, validLastName] = React.useState(!newUser);
+    const [emailValid, validEmail] = React.useState(!newUser);
+    const [firstNameTouched, touchFirstName] = React.useState(!newUser);
+    const [lastNameTouched, touchLastName] = React.useState(!newUser);
+    const [emailTouched, touchEmail] = React.useState(!newUser);
+    const [opened, markOpened] = React.useState(false);
+
+    const props = {
+        user: user,
+        formData: formData,
+        setFormData: setFormData,
+        firstNameValid: firstNameValid,
+        validFirstName: validFirstName,
+        firstNameTouched: firstNameTouched,
+        touchFirstName: touchFirstName,
+        lastNameValid: lastNameValid,
+        validLastName: validLastName,
+        lastNameTouched: lastNameTouched,
+        touchLastName: touchLastName,
+        emailValid: emailValid,
+        validEmail: validEmail,
+        emailTouched: emailTouched,
+        touchEmail: touchEmail,
+        closeDialog: closeDialog,
+        submitUser: submitUser,
+        newUser: newUser,
+    };
+
+    if (!open) {
+        if (opened) {
+            markOpened(false);
+        }
+        return null;
+    }
+    else if (!opened) {
+        updateState();
+        markOpened(true);
+    }
+
+
     return (
-        <Dialog open={open} onRendered={updateState} onClose={closeDialog} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">{newUser ? 'Add a user': 'Update user'}</DialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                    Fill out the form below to {newUser ? 'add a user to': 'update the user in'} the user cache.
-                </DialogContentText>
-                <form autoComplete="off">
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="firstName"
-                        label="First Name"
-                        defaultValue={user.firstName}
-                        onChange={firstNameChange}
-                        onFocus={() => touchFirstName(true)}
-                        error={!firstNameValid && firstNameTouched}
-                        helperText="A first name is required"
-                        fullWidth
-                        required
-                    />
-                    <TextField
-                        margin="dense"
-                        id="lastName"
-                        label="Last Name"
-                        defaultValue={user.lastName}
-                        onChange={lastNameChange}
-                        onFocus={() => touchLastName(true)}
-                        error={!lastNameValid && lastNameTouched}
-                        helperText="A last name is required"
-                        fullWidth
-                        required
-                    />
-                    <TextField
-                        margin="dense"
-                        id="email"
-                        label="Email Address"
-                        type="email"
-                        defaultValue={user.email}
-                        onChange={emailChange}
-                        onFocus={() => touchEmail(true)}
-                        error={!emailValid && emailTouched}
-                        helperText="An email address is required"
-                        fullWidth
-                        required
-                    />
-                    <TextField
-                        margin="dense"
-                        id="avatar"
-                        label="Avatar Image URL"
-                        defaultValue={user.avatar}
-                        onChange={avatarChange}
-                        fullWidth
-                    />
-                </form>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={closeDialog} color="primary">
-                    Cancel
-                </Button>
-                <Button disabled={!(firstNameValid && lastNameValid && emailValid)} onClick={submitUser} color="primary">
-                    {newUser ? 'Add': 'Update'} User
-                </Button>
-            </DialogActions>
-        </Dialog>
+        <div className='modal-background' onClick={(event) => modalBackgroundClick(event)}>
+            <div className='modal' >
+                <div className='modal-header'>
+                    <h4 className='modal-title'>
+                        {newUser ? 'Add a user' : 'Update user'}
+                    </h4>
+                    <hr />
+                    <h2>
+                        Fill out the form below to {props.newUser ? 'add a user to' : 'update the user in'} the user cache.
+                    </h2>
+                </div>
+                <div className='modal-body'>
+                    <form>
+                        <div className='form-field'>
+                            <label htmlFor='firstName'>First Name</label>
+                            <input
+                                autoFocus
+                                id='firstName'
+                                defaultValue={props.user.firstName}
+                                onChange={firstNameChange}
+                                onFocus={() => props.touchFirstName(true)}
+                                required
+                            />
+                            <span hidden={props.firstNameValid || !props.firstNameTouched} style={{ color: "red" }}>A first name is required</span>
+                        </div>
+                        <div className='form-field'>
+                            <label htmlFor='lastName'>Last Name</label>
+                            <input
+                                id='lastName'
+                                defaultValue={props.user.lastName}
+                                onChange={(e) => lastNameChange(e)}
+                                onFocus={() => props.touchLastName(true)}
+                                required
+                            />
+                            <span hidden={props.lastNameValid || !props.lastNameTouched} style={{ color: "red" }}>A last name is required</span>
+                        </div>
+                        <div className='form-field'>
+                            <label htmlFor='email'>Email</label>
+                            <input
+                                id='email'
+                                type='email'
+                                defaultValue={props.user.email}
+                                onChange={emailChange}
+                                onFocus={() => props.touchEmail(true)}
+                                required
+                            />
+                            <span hidden={props.emailValid || !props.emailTouched} style={{ color: "red" }}>An email address is required</span>
+                        </div>
+                        <div className='form-field'>
+                            <label htmlFor='avatar'>Avatar Image URL</label>
+                            <input
+                                id='avatar'
+                                defaultValue={props.user.avatar}
+                                onChange={avatarChange}
+                            />
+                        </div>
+                    </form>
+                </div>
+                <div className='modal-footer'>
+                    <Button onClick={props.closeDialog} className='cancel-button'>
+                        Cancel
+                    </Button>
+                    <Button disabled={!(props.firstNameValid && props.lastNameValid && props.emailValid)} onClick={props.submitUser} className='main-button'>
+                        {props.newUser ? 'Add' : 'Update'} User
+                    </Button>
+                </div>
+            </div>
+        </div>
     );
+
+    // if (open && !opened) {
+    //     updateState();
+    // }
+
+    // return (
+    //     <Modal
+    //         openStatuses={{
+    //             open: open,
+    //             opened: opened,
+    //             markOpened: markOpened
+    //         }}
+    //         modalFooter={() => ModalFooter(props)}
+    //         modalBody={() => ModalBody(props)}
+    //         modalTitle={newUser ? 'Add a user' : 'Update user'}
+    //     />
+    // );
 }
 
 export default UserModal;

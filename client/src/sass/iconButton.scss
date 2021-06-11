@@ -1,0 +1,34 @@
+@import '../../node_modules/font-awesome/css/font-awesome.min.css';
+@import './variables';
+
+.icon-button {
+    font-size: 25px;
+    border-radius: 50%;
+    background-color: #fefefe;
+    padding: 15px 20px;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px #666;
+    transition: .1s;
+    width: 50px;
+    height: 50px;
+    font-weight: bold;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    .main-button {
+        color: scale-color($mainAppColor, $lightness: -20%);
+        border: none;
+    }
+    .delete-button {
+        color: scale-color($warningColor, $lightness: -20%);
+        border: none;
+    }
+}
+
+.icon-button:hover {
+    margin: 10px 9px 9px 11px;
+    background-color: #eee;
+    box-shadow: none;
+    transition: .1s;
+}
