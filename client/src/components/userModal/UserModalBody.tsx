@@ -1,8 +1,7 @@
-import Users from '../models/Users';
-import React from 'react';
-import { FirstNameField, LastNameField, EmailField, Avatar } from './formFields/FormFields';
+import Users from '../../models/Users';
+import { FirstNameField, LastNameField, EmailField, Avatar } from '../formFields/FormFields';
 
-interface Properties {
+interface ParentProperties {
     user: Users,
     formData: {
         id: number;
@@ -30,16 +29,16 @@ interface Properties {
     validEmail: React.Dispatch<React.SetStateAction<boolean>>,
     emailTouched: boolean,
     touchEmail: React.Dispatch<React.SetStateAction<boolean>>,
-    newUser: boolean,
+}
+
+interface Properties {
+    properties : ParentProperties
 };
 
-export default function ModalBody(properties: Properties) {
+export default function UserModalBody({properties}: Properties) {
     return (
-        <div>
-            <h2>
-                Fill out the form below to {properties.newUser ? 'add a user to' : 'update the user in'} the user cache.
-            </h2>
-            <form autoComplete='off'>
+        <div className='modal-body'>
+            <form>
                 <FirstNameField properties={properties} />
                 <LastNameField properties={properties} />
                 <EmailField properties={properties} />

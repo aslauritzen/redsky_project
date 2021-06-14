@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '../components/Button';
-import UserModal from './UserModal';
+import UserModal from './userModal/UserModal';
 import Users from '../models/Users';
 import { ForceReload } from '../util/tableState';
 import { useSetRecoilState } from 'recoil';

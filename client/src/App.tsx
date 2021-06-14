@@ -6,12 +6,13 @@ import AddUser from './components/AddUser';
 import MainAppBar from './components/MainAppBar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Skeleton from 'react-loading-skeleton';
 
 function App() {
     return (
         <RecoilRoot>
             <MainAppBar />
-            <React.Suspense fallback={<div>Loading...</div>}>
+            <React.Suspense fallback={<Skeleton />}>
                 <AddUser />
                 <UserList />
                 <ToastContainer />

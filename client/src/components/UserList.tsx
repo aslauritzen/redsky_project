@@ -8,15 +8,12 @@ import UserRows from './UserRows';
 import UserHeader from './UserHeader';
 import Users from '../models/Users';
 import { ForceReload } from '../util/tableState';
-import UserModal from './UserModal';
+import UserModal from './userModal/UserModal';
 import '../sass/styles.scss';
 
 export default function UserList() {
-    // const classes = useStyles();
     const reload = useSetRecoilState(ForceReload);
-    // eslint-disable-next-line
     const [open, setOpen] = React.useState(false);
-    // eslint-disable-next-line
     const [currentUser, setCurrentUser] = React.useState(Users.emptyUser());
 
     function editUser(user: Users) {

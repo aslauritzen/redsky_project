@@ -23,13 +23,13 @@ axios.get('https://reqres.in/api/users?page=1').then(async (response: any) => {
     await initUserCache(response.data.data);
 
     app.get('/', (req: Request, res: Response) => {
-      res.send(userCache);
+        res.send(userCache);
     });
 
     app.listen(PORT, () => console.log(`Running on ${PORT} ⚡`));
 }).catch((error) => {
     console.log(error);
-    
+
     app.get('/', (req: Request, res: Response) => {
         res.send({});
     });

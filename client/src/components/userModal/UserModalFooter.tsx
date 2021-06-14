@@ -1,17 +1,21 @@
-import Button from './Button';
+import Button from '../Button';
 
-interface Properties {
+interface ParentProperties {
+    submitUser: VoidFunction,
     closeDialog: VoidFunction,
+    newUser: boolean,
     firstNameValid: boolean,
     lastNameValid: boolean,
     emailValid: boolean,
-    submitUser: VoidFunction,
-    newUser: boolean
+}
+
+interface Properties {
+    properties: ParentProperties
 };
 
-export default function ModalFooter(properties: Properties) {
+export default function UserModalFooter({ properties }: Properties) {
     return (
-        <div>
+        <div className='modal-footer'>
             <Button onClick={properties.closeDialog} className='cancel-button'>
                 Cancel
             </Button>
