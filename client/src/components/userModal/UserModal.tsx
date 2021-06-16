@@ -38,9 +38,9 @@ const UserModal: React.FC<Userproperties> = ({ user, open, handleClose, reload, 
         validFirstName(!newUser);
         validLastName(!newUser);
         validEmail(!newUser);
-        touchFirstName(!newUser);
-        touchLastName(!newUser);
-        touchEmail(!newUser);
+        touchFirstName(false);
+        touchLastName(false);
+        touchEmail(false);
         reload(Math.random());
         handleClose();
     }
@@ -49,21 +49,24 @@ const UserModal: React.FC<Userproperties> = ({ user, open, handleClose, reload, 
     const [firstNameValid, validFirstName] = React.useState(!newUser);
     const [lastNameValid, validLastName] = React.useState(!newUser);
     const [emailValid, validEmail] = React.useState(!newUser);
-    const [firstNameTouched, touchFirstName] = React.useState(!newUser);
-    const [lastNameTouched, touchLastName] = React.useState(!newUser);
-    const [emailTouched, touchEmail] = React.useState(!newUser);
+    const [firstNameTouched, touchFirstName] = React.useState(false);
+    const [lastNameTouched, touchLastName] = React.useState(false);
+    const [emailTouched, touchEmail] = React.useState(false);
     const [opened, markOpened] = React.useState(false);
 
     if (!open) {
         if (opened) {
             markOpened(false);
         }
+        document.body.className = '';
         return null;
     }
     else if (!opened) {
         updateState();
         markOpened(true);
     }
+    
+    document.body.className = 'no-scroll';
 
     const properties = {
         user: user,

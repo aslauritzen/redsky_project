@@ -44,6 +44,6 @@ export default function FirstNameField ({properties}: Properties) {
                 onFocus={() => properties.touchFirstName(true)}
                 required
             />
-            <span hidden={!properties.firstNameValid && properties.firstNameTouched} style={{ color: "red" }}>A first name is required</span>
+            <span hidden={properties.firstNameValid || !properties.firstNameTouched} style={{ color: "red" }}>A first name is required</span>
         </div>);
 }

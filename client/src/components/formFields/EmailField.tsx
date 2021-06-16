@@ -44,6 +44,6 @@ export default function EmailField ({properties}: Properties) {
                 onFocus={() => properties.touchEmail(true)}
                 required
             />
-            <span hidden={!properties.emailValid && properties.emailTouched} style={{ color: "red" }}>An email address is required</span>
+            <span hidden={properties.emailValid || !properties.emailTouched} style={{ color: "red" }}>An email address is required</span>
         </div>);
 }

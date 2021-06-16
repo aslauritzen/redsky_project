@@ -20,11 +20,14 @@ export default function Modal({ openStatuses, modalTitle = 'Modal', modalBody, m
         if (openStatuses.opened) {
             openStatuses.markOpened(false);
         }
+        document.body.className = '';
         return null;
     }
     else if (openStatuses.open && !openStatuses.opened) {
         openStatuses.markOpened(true);
     }
+    
+    document.body.className = 'no-scroll';
 
     return (
         <div className='modal' >

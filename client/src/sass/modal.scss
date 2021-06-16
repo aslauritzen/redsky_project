@@ -1,10 +1,10 @@
 .modal {
-    position: absolute;
+    position: fixed;
     background-color: white;
     top: 10vh;
     right: 25vw;
-    width: 50vw;
-    height: 70vh;
+    width: 640px;
+    min-height: 450px;
     padding: 20px;
     box-shadow: 1px 1px 5px #aaa;
     border-radius: 5px;
@@ -13,6 +13,10 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+.no-scroll {
+    overflow: hidden;
 }
 
 .modal-body {
@@ -39,7 +43,7 @@
 .modal-background {
     height: 100%;
     width: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     background-color: rgba(0, 0, 0, .26);  
